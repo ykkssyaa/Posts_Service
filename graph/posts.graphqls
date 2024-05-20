@@ -1,0 +1,35 @@
+scalar Timestamp
+
+type Post {
+    id: ID!
+    createdAt: Timestamp!
+    name: String!
+    author: String!
+    content: String!
+}
+
+type PostDetails {
+    id: ID!
+    createdAt: Timestamp!
+    name: String!
+    author: String!
+    content: String!
+    commentsAllowed: Boolean!
+    comments:[Comment!]
+}
+
+input InputPost{
+    name: String!
+    content: String!
+    author: String!
+    commentsAllowed: Boolean!
+}
+
+type Query{
+    GetAllPosts(page: Int, pageSize: Int): [Post!]!
+    GetPostById(id: Int): PostDetails!
+}
+
+type Mutation{
+    CreatePost(post: InputPost!):Post!
+}
