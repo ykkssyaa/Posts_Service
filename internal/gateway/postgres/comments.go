@@ -1,4 +1,4 @@
-package gateway
+package postgres
 
 import "github.com/jmoiron/sqlx"
 
