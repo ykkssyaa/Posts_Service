@@ -7,6 +7,7 @@ import lg "github.com/ykkssyaa/Posts_Service/pkg/logger"
 
 func main() {
 	logger := lg.InitLogger()
+	logger.Info.Print("Executing InitLogger.")
 
 	logger.Info.Print("Executing InitConfig.")
 	if err := config.InitConfig(); err != nil {
