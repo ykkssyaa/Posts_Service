@@ -19,6 +19,7 @@ func main() {
 	if len(os.Args) >= 2 {
 		envFile = os.Args[1]
 	}
+
 	logger.Info.Print("Executing InitConfig.")
 	logger.Info.Printf("Reading %s \n", envFile)
 	if err := config.InitConfig(envFile); err != nil {

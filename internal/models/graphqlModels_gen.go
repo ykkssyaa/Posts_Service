@@ -49,3 +49,6 @@ type PostDetails struct {
 
 type Query struct {
 }
+
+type Subscription struct {
+}

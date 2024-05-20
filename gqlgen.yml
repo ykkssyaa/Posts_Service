@@ -21,7 +21,7 @@ model:
 resolver:
   layout: follow-schema
   dir: internal/server/graphql
-  package: resolvers
+  package: graphql
   filename_template: "{name}.go"
   # Optional: turn on to not generate template comments above resolvers
   # omit_template_comment: false

@@ -19,3 +19,7 @@ input InputComment{
 extend type Mutation {
     CreateComment(input: InputComment!): Comment!
 }
+
+type Subscription{
+    CommentsSubscription(postId:ID!):Comment!
+}
