@@ -4,8 +4,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func InitConfig() error {
-	err := godotenv.Load()
+func InitConfig(file string) error {
+	err := godotenv.Load(file)
 
 	return err
 }
