@@ -1,8 +1,8 @@
-scalar Timestamp
+scalar Time
 
 type Post {
     id: ID!
-    createdAt: Timestamp!
+    createdAt: Time!
     name: String!
     author: String!
     content: String!
@@ -10,7 +10,7 @@ type Post {
 
 type PostDetails {
     id: ID!
-    createdAt: Timestamp!
+    createdAt: Time!
     name: String!
     author: String!
     content: String!

@@ -2,9 +2,13 @@
 
 package models
 
+import (
+	"time"
+)
+
 type Comment struct {
 	ID        int        `json:"id"`
-	CreatedAt string     `json:"createdAt"`
+	CreatedAt time.Time  `json:"createdAt"`
 	Author    string     `json:"author"`
 	Content   string     `json:"content"`
 	Post      int        `json:"post"`
@@ -30,16 +34,16 @@ type Mutation struct {
 }
 
 type Post struct {
-	ID        int    `json:"id"`
-	CreatedAt string `json:"createdAt"`
-	Name      string `json:"name"`
-	Author    string `json:"author"`
-	Content   string `json:"content"`
+	ID        int       `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	Name      string    `json:"name"`
+	Author    string    `json:"author"`
+	Content   string    `json:"content"`
 }
 
 type PostDetails struct {
 	ID              int        `json:"id"`
-	CreatedAt       string     `json:"createdAt"`
+	CreatedAt       time.Time  `json:"createdAt"`
 	Name            string     `json:"name"`
 	Author          string     `json:"author"`
 	Content         string     `json:"content"`
