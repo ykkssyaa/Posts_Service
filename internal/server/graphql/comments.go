@@ -18,7 +18,7 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input models.Input
 }
 
 // CommentsSubscription is the resolver for the CommentsSubscription field.
-func (r *subscriptionResolver) CommentsSubscription(ctx context.Context, postID string) (<-chan *models.Comment, error) {
+func (r *subscriptionResolver) CommentsSubscription(ctx context.Context, postID int) (<-chan *models.Comment, error) {
 	panic(fmt.Errorf("not implemented: CommentsSubscription - CommentsSubscription"))
 }
 

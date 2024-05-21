@@ -3,20 +3,20 @@
 package models
 
 type Comment struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	CreatedAt string     `json:"createdAt"`
 	Author    string     `json:"author"`
 	Content   string     `json:"content"`
-	Post      string     `json:"post"`
+	Post      int        `json:"post"`
 	Replies   []*Comment `json:"replies,omitempty"`
-	ReplyTo   *string    `json:"replyTo,omitempty"`
+	ReplyTo   *int       `json:"replyTo,omitempty"`
 }
 
 type InputComment struct {
-	Author  string  `json:"author"`
-	Content string  `json:"content"`
-	Post    string  `json:"post"`
-	ReplyTo *string `json:"replyTo,omitempty"`
+	Author  string `json:"author"`
+	Content string `json:"content"`
+	Post    int    `json:"post"`
+	ReplyTo *int   `json:"replyTo,omitempty"`
 }
 
 type InputPost struct {
@@ -30,7 +30,7 @@ type Mutation struct {
 }
 
 type Post struct {
-	ID        string `json:"id"`
+	ID        int    `json:"id"`
 	CreatedAt string `json:"createdAt"`
 	Name      string `json:"name"`
 	Author    string `json:"author"`
@@ -38,7 +38,7 @@ type Post struct {
 }
 
 type PostDetails struct {
-	ID              string     `json:"id"`
+	ID              int        `json:"id"`
 	CreatedAt       string     `json:"createdAt"`
 	Name            string     `json:"name"`
 	Author          string     `json:"author"`
