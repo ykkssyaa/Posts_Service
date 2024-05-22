@@ -7,10 +7,9 @@ package graphql
 import (
 	"context"
 	"errors"
-	"fmt"
-
 	"github.com/vektah/gqlparser/v2/gqlerror"
 	"github.com/ykkssyaa/Posts_Service/graph"
+	"github.com/ykkssyaa/Posts_Service/internal/consts"
 	"github.com/ykkssyaa/Posts_Service/internal/models"
 	re "github.com/ykkssyaa/Posts_Service/pkg/responce_errors"
 )
@@ -44,12 +43,43 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input models.Input
 		}
 	}
 
+	if err := r.CommentsObservers.NotifyObservers(newComment.Post, newComment); err != nil {
+		if err.Error() != consts.ThereIsNoObserversError {
+			return nil, &gqlerror.Error{
+				Extensions: map[string]interface{}{
+					"message": err,
+					"type":    consts.InternalErrorType,
+				},
+			}
+		}
+	}
+
 	return &newComment, nil
 }
 
 // CommentsSubscription is the resolver for the CommentsSubscription field.
 func (r *subscriptionResolver) CommentsSubscription(ctx context.Context, postID int) (<-chan *models.Comment, error) {
-	panic(fmt.Errorf("not implemented: CommentsSubscription - CommentsSubscription"))
+
+	id, ch, err := r.CommentsObservers.CreateObserver(postID)
+
+	if err != nil {
+		return nil, &gqlerror.Error{
+			Extensions: map[string]interface{}{
+				"message": err,
+				"type":    consts.InternalErrorType,
+			},
+		}
+	}
+
+	go func() {
+		<-ctx.Done()
+		err := r.CommentsObservers.DeleteObserver(id, postID)
+		if err != nil {
+			// TODO: error log
+		}
+	}()
+
+	return ch, nil
 }
 
 // Comment returns graph.CommentResolver implementation.

@@ -23,5 +23,6 @@ const (
 )
 
 const (
-	WrongLimitOffsetError = "limit and offset must be not negative"
+	WrongLimitOffsetError   = "limit and offset must be not negative"
+	ThereIsNoObserversError = "there is no connection to the observer"
 )

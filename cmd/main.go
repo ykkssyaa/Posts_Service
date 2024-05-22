@@ -54,6 +54,7 @@ func main() {
 
 	logger.Info.Print("Creating Gateways.")
 	logger.Info.Print("USE_IN_MEMORY = ", os.Getenv("USE_IN_MEMORY"))
+
 	if os.Getenv("USE_IN_MEMORY") == "true" {
 		posts := in_memory.NewPostsInMemory(consts.PostsPullSize)
 		comments := in_memory.NewCommentsInMemory(consts.CommentsPullSize)
@@ -70,8 +71,9 @@ func main() {
 	logger.Info.Print("Creating graphql server.")
 	port := os.Getenv("PORT")
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graphql.Resolver{
-		PostsService:    services.Posts,
-		CommentsService: services.Comments,
+		PostsService:      services.Posts,
+		CommentsService:   services.Comments,
+		CommentsObservers: graphql.NewCommentsObserver(),
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
