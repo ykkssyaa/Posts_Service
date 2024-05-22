@@ -87,7 +87,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		GetAllPosts func(childComplexity int, page *int, pageSize *int) int
-		GetPostByID func(childComplexity int, id *int) int
+		GetPostByID func(childComplexity int, id int) int
 	}
 
 	Subscription struct {
@@ -107,7 +107,7 @@ type PostResolver interface {
 }
 type QueryResolver interface {
 	GetAllPosts(ctx context.Context, page *int, pageSize *int) ([]*models.PostGraph, error)
-	GetPostByID(ctx context.Context, id *int) (*models.Post, error)
+	GetPostByID(ctx context.Context, id int) (*models.Post, error)
 }
 type SubscriptionResolver interface {
 	CommentsSubscription(ctx context.Context, postID int) (<-chan *models.Comment, error)
@@ -311,7 +311,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.GetPostByID(childComplexity, args["id"].(*int)), true
+		return e.complexity.Query.GetPostByID(childComplexity, args["id"].(int)), true
 
 	case "Subscription.CommentsSubscription":
 		if e.complexity.Subscription.CommentsSubscription == nil {
@@ -526,10 +526,10 @@ func (ec *executionContext) field_Query_GetAllPosts_args(ctx context.Context, ra
 func (ec *executionContext) field_Query_GetPostById_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *int
+	var arg0 int
 	if tmp, ok := rawArgs["id"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		arg0, err = ec.unmarshalNInt2int(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1684,7 +1684,7 @@ func (ec *executionContext) _Query_GetPostById(ctx context.Context, field graphq
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetPostByID(rctx, fc.Args["id"].(*int))
+		return ec.resolvers.Query().GetPostByID(rctx, fc.Args["id"].(int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4630,6 +4630,21 @@ func (ec *executionContext) unmarshalNInputComment2githubᚗcomᚋykkssyaaᚋPos
 func (ec *executionContext) unmarshalNInputPost2githubᚗcomᚋykkssyaaᚋPosts_ServiceᚋinternalᚋmodelsᚐInputPost(ctx context.Context, v interface{}) (models.InputPost, error) {
 	res, err := ec.unmarshalInputInputPost(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
+	res, err := graphql.UnmarshalInt(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
 }
 
 func (ec *executionContext) marshalNPost2githubᚗcomᚋykkssyaaᚋPosts_ServiceᚋinternalᚋmodelsᚐPost(ctx context.Context, sel ast.SelectionSet, v models.Post) graphql.Marshaler {

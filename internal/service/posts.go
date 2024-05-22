@@ -49,9 +49,26 @@ func (p PostsService) CreatePost(post models.Post) (models.Post, error) {
 
 }
 
-func (p PostsService) GetPostById(id int) (models.Post, error) {
-	//TODO implement me
-	panic("implement me")
+func (p PostsService) GetPostById(postId int) (models.Post, error) {
+
+	if postId <= 0 {
+		p.logger.Err.Println(consts.WrongIdError, postId)
+		return models.Post{}, re.ResponseError{
+			Message: consts.WrongIdError,
+			Type:    consts.BadRequestType,
+		}
+	}
+
+	post, err := p.repo.GetPostById(postId)
+	if err != nil {
+		p.logger.Err.Println(consts.GettingPostError, err.Error())
+		return models.Post{}, re.ResponseError{
+			Message: consts.GettingPostError,
+			Type:    consts.InternalErrorType,
+		}
+	}
+
+	return post, nil
 }
 
 func (p PostsService) GetAllPosts(page, pageSize *int) ([]models.Post, error) {

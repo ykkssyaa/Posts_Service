@@ -35,7 +35,7 @@ func (c CommentsPostgres) CreateComment(comment models.Comment) (models.Comment,
 
 func (c CommentsPostgres) GetCommentsByPost(postId int) ([]*models.Comment, error) {
 
-	query := `SELECT FROM comments WHERE post = $1 AND reply_to IS NULL`
+	query := `SELECT * FROM comments WHERE post = $1 AND reply_to IS NULL`
 
 	var comments []*models.Comment
 
