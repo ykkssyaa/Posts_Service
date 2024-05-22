@@ -29,11 +29,19 @@ func (c CommentsPostgres) CreateComment(comment models.Comment) (models.Comment,
 		return models.Comment{}, err
 	}
 
-	return comment, nil
+	return comment, tx.Commit()
 
 }
 
 func (c CommentsPostgres) GetCommentsByPost(postId int) ([]*models.Comment, error) {
-	//TODO implement me
-	panic("implement me")
+
+	query := `SELECT FROM comments WHERE post = $1 AND reply_to IS NULL`
+
+	var comments []*models.Comment
+
+	if err := c.db.Select(&comments, query, postId); err != nil {
+		return nil, err
+	}
+
+	return comments, nil
 }

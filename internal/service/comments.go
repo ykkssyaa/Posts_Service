@@ -47,6 +47,23 @@ func (c CommentsService) CreateComment(comment models.Comment) (models.Comment, 
 }
 
 func (c CommentsService) GetCommentsByPost(postId int) ([]*models.Comment, error) {
-	//TODO implement me
-	panic("implement me")
+
+	if postId <= 0 {
+		c.logger.Err.Println(consts.WrongIdError, postId)
+		return nil, re.ResponseError{
+			Message: consts.WrongIdError,
+			Type:    consts.BadRequestType,
+		}
+	}
+
+	comments, err := c.repo.GetCommentsByPost(postId)
+	if err != nil {
+		c.logger.Err.Println(consts.GettingCommentError, postId, err.Error())
+		return nil, re.ResponseError{
+			Message: consts.GettingCommentError,
+			Type:    consts.InternalErrorType,
+		}
+	}
+
+	return comments, nil
 }
