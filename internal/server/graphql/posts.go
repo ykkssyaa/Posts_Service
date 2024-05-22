@@ -6,24 +6,47 @@ package graphql
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
+	"github.com/vektah/gqlparser/v2/gqlerror"
 	"github.com/ykkssyaa/Posts_Service/graph"
 	"github.com/ykkssyaa/Posts_Service/internal/models"
+	re "github.com/ykkssyaa/Posts_Service/pkg/responce_errors"
 )
 
 // CreatePost is the resolver for the CreatePost field.
-func (r *mutationResolver) CreatePost(ctx context.Context, post models.InputPost) (*models.Post, error) {
-	panic(fmt.Errorf("not implemented: CreatePost - CreatePost"))
+func (r *mutationResolver) CreatePost(ctx context.Context, post models.InputPost) (*models.PostGraph, error) {
+	newPost, err := r.Posts.CreatePost(post.FromInput())
+	if err != nil {
+		var rErr re.ResponseError
+		if errors.As(err, &rErr) {
+			return nil, &gqlerror.Error{
+				Extensions: rErr.Extensions(),
+			}
+		}
+	}
+
+	return newPost.ToGraph(), nil
 }
 
 // GetAllPosts is the resolver for the GetAllPosts field.
-func (r *queryResolver) GetAllPosts(ctx context.Context, page *int, pageSize *int) ([]*models.Post, error) {
-	panic(fmt.Errorf("not implemented: GetAllPosts - GetAllPosts"))
+func (r *queryResolver) GetAllPosts(ctx context.Context, page *int, pageSize *int) ([]*models.PostGraph, error) {
+	posts, err := r.Posts.GetAllPosts(page, pageSize)
+	if err != nil {
+		var rErr re.ResponseError
+		if errors.As(err, &rErr) {
+			return nil, &gqlerror.Error{
+				Extensions: rErr.Extensions(),
+			}
+		}
+	}
+
+	return models.ToPostGraph(posts), nil
 }
 
 // GetPostByID is the resolver for the GetPostById field.
-func (r *queryResolver) GetPostByID(ctx context.Context, id *int) (*models.PostDetails, error) {
+func (r *queryResolver) GetPostByID(ctx context.Context, id *int) (*models.Post, error) {
 	panic(fmt.Errorf("not implemented: GetPostByID - GetPostById"))
 }
 

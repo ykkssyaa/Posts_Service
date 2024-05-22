@@ -1,5 +1,7 @@
 package gateway
 
+import "github.com/ykkssyaa/Posts_Service/internal/models"
+
 type Gateways struct {
 	Posts
 	Comments
@@ -13,6 +15,9 @@ func NewGateways(posts Posts, comments Comments) *Gateways {
 }
 
 type Posts interface {
+	CreatePost(post models.Post) (models.Post, error)
+	GetPostById(id int) (models.Post, error)
+	GetAllPosts(limit, offset int) ([]models.Post, error)
 }
 
 type Comments interface {

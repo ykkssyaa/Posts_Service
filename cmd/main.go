@@ -61,7 +61,7 @@ func main() {
 	}
 
 	logger.Info.Print("Creating Services.")
-	services := service.NewServices(gateways)
+	services := service.NewServices(gateways, logger)
 
 	logger.Info.Print("Creating graphql server.")
 	port := os.Getenv("PORT")

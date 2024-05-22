@@ -6,16 +6,6 @@ import (
 	"time"
 )
 
-type Comment struct {
-	ID        int        `json:"id"`
-	CreatedAt time.Time  `json:"createdAt"`
-	Author    string     `json:"author"`
-	Content   string     `json:"content"`
-	Post      int        `json:"post"`
-	Replies   []*Comment `json:"replies,omitempty"`
-	ReplyTo   *int       `json:"replyTo,omitempty"`
-}
-
 type InputComment struct {
 	Author  string `json:"author"`
 	Content string `json:"content"`
@@ -33,22 +23,12 @@ type InputPost struct {
 type Mutation struct {
 }
 
-type Post struct {
+type PostGraph struct {
 	ID        int       `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
 	Name      string    `json:"name"`
 	Author    string    `json:"author"`
 	Content   string    `json:"content"`
-}
-
-type PostDetails struct {
-	ID              int        `json:"id"`
-	CreatedAt       time.Time  `json:"createdAt"`
-	Name            string     `json:"name"`
-	Author          string     `json:"author"`
-	Content         string     `json:"content"`
-	CommentsAllowed bool       `json:"commentsAllowed"`
-	Comments        []*Comment `json:"comments,omitempty"`
 }
 
 type Query struct {

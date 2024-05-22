@@ -1,6 +1,6 @@
 scalar Time
 
-type Post {
+type PostGraph {
     id: ID!
     createdAt: Time!
     name: String!
@@ -8,7 +8,7 @@ type Post {
     content: String!
 }
 
-type PostDetails {
+type Post {
     id: ID!
     createdAt: Time!
     name: String!
@@ -26,10 +26,10 @@ input InputPost{
 }
 
 type Query{
-    GetAllPosts(page: Int, pageSize: Int): [Post!]!
-    GetPostById(id: Int): PostDetails!
+    GetAllPosts(page: Int, pageSize: Int): [PostGraph!]!
+    GetPostById(id: Int): Post!
 }
 
 type Mutation{
-    CreatePost(post: InputPost!):Post!
+    CreatePost(post: InputPost!):PostGraph!
 }
