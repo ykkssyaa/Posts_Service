@@ -22,7 +22,7 @@ func (r *commentResolver) Replies(ctx context.Context, obj *models.Comment) ([]*
 
 // CreateComment is the resolver for the CreateComment field.
 func (r *mutationResolver) CreateComment(ctx context.Context, input models.InputComment) (*models.Comment, error) {
-	newComment, err := r.Comments.CreateComment(input.FromInput())
+	newComment, err := r.CommentsService.CreateComment(input.FromInput())
 	if err != nil {
 		var rErr re.ResponseError
 		if errors.As(err, &rErr) {

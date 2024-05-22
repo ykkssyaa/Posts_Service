@@ -17,7 +17,7 @@ import (
 
 // CreatePost is the resolver for the CreatePost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, post models.InputPost) (*models.PostGraph, error) {
-	newPost, err := r.Posts.CreatePost(post.FromInput())
+	newPost, err := r.PostsService.CreatePost(post.FromInput())
 	if err != nil {
 		var rErr re.ResponseError
 		if errors.As(err, &rErr) {
@@ -37,7 +37,7 @@ func (r *postResolver) Comments(ctx context.Context, obj *models.Post) ([]*model
 
 // GetAllPosts is the resolver for the GetAllPosts field.
 func (r *queryResolver) GetAllPosts(ctx context.Context, page *int, pageSize *int) ([]*models.PostGraph, error) {
-	posts, err := r.Posts.GetAllPosts(page, pageSize)
+	posts, err := r.PostsService.GetAllPosts(page, pageSize)
 	if err != nil {
 		var rErr re.ResponseError
 		if errors.As(err, &rErr) {
