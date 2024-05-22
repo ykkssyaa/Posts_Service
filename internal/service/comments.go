@@ -67,3 +67,26 @@ func (c CommentsService) GetCommentsByPost(postId int) ([]*models.Comment, error
 
 	return comments, nil
 }
+
+func (c CommentsService) GetRepliesOfComment(commentId int) ([]*models.Comment, error) {
+
+	if commentId <= 0 {
+		c.logger.Err.Println(consts.WrongIdError, commentId)
+		return nil, re.ResponseError{
+			Message: consts.WrongIdError,
+			Type:    consts.BadRequestType,
+		}
+	}
+
+	comments, err := c.repo.GetRepliesOfComment(commentId)
+	if err != nil {
+		c.logger.Err.Println(consts.GettingRepliesError, commentId, err.Error())
+		return nil, re.ResponseError{
+			Message: consts.GettingRepliesError,
+			Type:    consts.InternalErrorType,
+		}
+	}
+
+	return comments, nil
+
+}

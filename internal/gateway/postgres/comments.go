@@ -45,3 +45,16 @@ func (c CommentsPostgres) GetCommentsByPost(postId int) ([]*models.Comment, erro
 
 	return comments, nil
 }
+
+func (c CommentsPostgres) GetRepliesOfComment(commentId int) ([]*models.Comment, error) {
+
+	query := `SELECT * FROM comments WHERE reply_to = $1`
+
+	var comments []*models.Comment
+
+	if err := c.db.Select(&comments, query, commentId); err != nil {
+		return nil, err
+	}
+
+	return comments, nil
+}

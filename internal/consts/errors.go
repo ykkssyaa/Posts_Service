@@ -12,6 +12,7 @@ const (
 
 	CreatingCommentError = "error with creating new comment"
 	GettingCommentError  = "error with getting comments"
+	GettingRepliesError  = "error with getting replies ti comment"
 )
 
 const (

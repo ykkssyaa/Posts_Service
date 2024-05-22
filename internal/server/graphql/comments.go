@@ -17,7 +17,19 @@ import (
 
 // Replies is the resolver for the replies field.
 func (r *commentResolver) Replies(ctx context.Context, obj *models.Comment) ([]*models.Comment, error) {
-	panic(fmt.Errorf("not implemented: Replies - replies"))
+
+	comments, err := r.CommentsService.GetRepliesOfComment(obj.ID)
+	if err != nil {
+		var rErr re.ResponseError
+		if errors.As(err, &rErr) {
+			return nil, &gqlerror.Error{
+				Extensions: rErr.Extensions(),
+			}
+		}
+	}
+
+	return comments, nil
+
 }
 
 // CreateComment is the resolver for the CreateComment field.

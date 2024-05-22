@@ -27,4 +27,5 @@ type Posts interface {
 type Comments interface {
 	CreateComment(comment models.Comment) (models.Comment, error)
 	GetCommentsByPost(postId int) ([]*models.Comment, error)
+	GetRepliesOfComment(commentId int) ([]*models.Comment, error)
 }
