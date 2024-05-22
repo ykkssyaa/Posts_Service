@@ -1,6 +1,8 @@
 package service
 
 import (
+	"database/sql"
+	"errors"
 	"github.com/ykkssyaa/Posts_Service/internal/consts"
 	"github.com/ykkssyaa/Posts_Service/internal/gateway"
 	"github.com/ykkssyaa/Posts_Service/internal/models"
@@ -61,7 +63,14 @@ func (p PostsService) GetPostById(postId int) (models.Post, error) {
 
 	post, err := p.repo.GetPostById(postId)
 	if err != nil {
+
 		p.logger.Err.Println(consts.GettingPostError, err.Error())
+		if errors.Is(err, sql.ErrNoRows) {
+			return models.Post{}, re.ResponseError{
+				Message: consts.PostNotFountError,
+				Type:    consts.NotFoundType,
+			}
+		}
 		return models.Post{}, re.ResponseError{
 			Message: consts.GettingPostError,
 			Type:    consts.InternalErrorType,

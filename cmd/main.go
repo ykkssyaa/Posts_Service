@@ -6,8 +6,10 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/ykkssyaa/Posts_Service/graph"
 	"github.com/ykkssyaa/Posts_Service/internal/config"
+	"github.com/ykkssyaa/Posts_Service/internal/consts"
 	"github.com/ykkssyaa/Posts_Service/internal/db"
 	"github.com/ykkssyaa/Posts_Service/internal/gateway"
+	in_memory "github.com/ykkssyaa/Posts_Service/internal/gateway/in-memory"
 	"github.com/ykkssyaa/Posts_Service/internal/gateway/postgres"
 	"github.com/ykkssyaa/Posts_Service/internal/server/graphql"
 	"github.com/ykkssyaa/Posts_Service/internal/service"
@@ -53,7 +55,9 @@ func main() {
 	logger.Info.Print("Creating Gateways.")
 	logger.Info.Print("USE_IN_MEMORY = ", os.Getenv("USE_IN_MEMORY"))
 	if os.Getenv("USE_IN_MEMORY") == "true" {
-		// TODO: use In-memory storage
+		posts := in_memory.NewPostsInMemory(consts.PostsPullSize)
+		comments := in_memory.NewCommentsInMemory(consts.CommentsPullSize)
+		gateways = gateway.NewGateways(posts, comments)
 	} else {
 		posts := postgres.NewPostsPostgres(postgresDb)
 		comments := postgres.NewCommentsPostgres(postgresDb)
