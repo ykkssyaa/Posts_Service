@@ -17,21 +17,20 @@ func (p PostsPostgres) CreatePost(post models.Post) (models.Post, error) {
 
 	query := `INSERT INTO Posts (name, content, author, comments_allowed) 
 				VALUES ($1, $2, $3, $4)
-				RETURNING id, created_at, name, content, author`
+				RETURNING id, created_at`
 
 	tx, err := p.db.Begin()
 	if err != nil {
 		return models.Post{}, err
 	}
 
-	var newPost models.Post
 	row := tx.QueryRow(query, post.Name, post.Content, post.Author, post.CommentsAllowed)
-	if err := row.Scan(&newPost.ID, &newPost.CreatedAt, &newPost.Name, &newPost.Content, &newPost.Author); err != nil {
+	if err := row.Scan(&post.ID, &post.CreatedAt); err != nil {
 		tx.Rollback()
 		return models.Post{}, err
 	}
 
-	return newPost, tx.Commit()
+	return post, tx.Commit()
 }
 
 func (p PostsPostgres) GetPostById(id int) (models.Post, error) {

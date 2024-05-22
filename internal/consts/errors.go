@@ -8,6 +8,8 @@ const (
 
 	CreatingPostError = "error with creating new post"
 	GettingPostError  = "error with getting post"
+
+	CreatingCommentError = "error with creating new comment"
 )
 
 const (

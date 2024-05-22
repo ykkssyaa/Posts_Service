@@ -3,13 +3,13 @@ package models
 import "time"
 
 type Post struct {
-	ID              int        `json:"id" db:"id"`
-	CreatedAt       time.Time  `json:"createdAt" db:"created_at"`
-	Name            string     `json:"name" db:"name"`
-	Author          string     `json:"author" db:"author"`
-	Content         string     `json:"content" db:"content"`
-	CommentsAllowed bool       `json:"commentsAllowed" db:"comments_allowed"`
-	Comments        []*Comment `json:"comments,omitempty"`
+	ID              int       `json:"id" db:"id"`
+	CreatedAt       time.Time `json:"createdAt" db:"created_at"`
+	Name            string    `json:"name" db:"name"`
+	Author          string    `json:"author" db:"author"`
+	Content         string    `json:"content" db:"content"`
+	CommentsAllowed bool      `json:"commentsAllowed" db:"comments_allowed"`
+	//Comments        []*Comment `json:"comments,omitempty"`
 }
 
 func (p InputPost) FromInput() Post {
