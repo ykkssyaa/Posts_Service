@@ -1,4 +1,8 @@
 
+local.run:
+	go run ./cmd/main.go
+
+
 graph.gen:
 	go run github.com/99designs/gqlgen generate --verbose
 
