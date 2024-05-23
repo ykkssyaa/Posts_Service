@@ -42,6 +42,14 @@ func (c CommentsService) CreateComment(comment models.Comment) (models.Comment, 
 		}
 	}
 
+	if comment.Post <= 0 {
+		c.logger.Err.Println(consts.WrongIdError, comment.Post)
+		return models.Comment{}, re.ResponseError{
+			Message: consts.WrongIdError,
+			Type:    consts.BadRequestType,
+		}
+	}
+
 	post, err := c.PostGetter.GetPostById(comment.Post)
 	if err != nil {
 		c.logger.Err.Println(consts.GettingPostError, err.Error())
@@ -54,7 +62,7 @@ func (c CommentsService) CreateComment(comment models.Comment) (models.Comment, 
 	}
 
 	if !post.CommentsAllowed {
-		c.logger.Err.Println(consts.CommentsNotAllowedError, err.Error())
+		c.logger.Err.Println(consts.CommentsNotAllowedError)
 		return models.Comment{}, re.ResponseError{
 			Message: consts.CommentsNotAllowedError,
 			Type:    consts.BadRequestType,
@@ -80,6 +88,22 @@ func (c CommentsService) GetCommentsByPost(postId int, page *int, pageSize *int)
 		c.logger.Err.Println(consts.WrongIdError, postId)
 		return nil, re.ResponseError{
 			Message: consts.WrongIdError,
+			Type:    consts.BadRequestType,
+		}
+	}
+
+	if page != nil && *page < 0 {
+		c.logger.Err.Println(consts.WrongPageError, *page)
+		return nil, re.ResponseError{
+			Message: consts.WrongPageError,
+			Type:    consts.BadRequestType,
+		}
+	}
+
+	if pageSize != nil && *pageSize < 0 {
+		c.logger.Err.Println(consts.WrongPageSizeError, *pageSize)
+		return nil, re.ResponseError{
+			Message: consts.WrongPageSizeError,
 			Type:    consts.BadRequestType,
 		}
 	}

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func isEqual(want, got models.Comment) bool {
+func IsEqual(want, got models.Comment) bool {
 	if want.Post != got.Post || want.ID != got.ID || want.Author != got.Author || want.Content != got.Content {
 		return false
 	}
@@ -59,7 +59,7 @@ func TestCommentsInMemory_CreateComment(t *testing.T) {
 				t.Errorf("CreateComment() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !isEqual(got, tt.want) {
+			if !IsEqual(got, tt.want) {
 				t.Errorf("CreateComment() got = %v, want %v", got, tt.want)
 			}
 		})
@@ -243,7 +243,7 @@ func TestCommentsInMemory_GetCommentsByPost(t *testing.T) {
 				return
 			}
 			for i := 0; i < len(got); i++ {
-				if !isEqual(*got[i], *tt.want[i]) {
+				if !IsEqual(*got[i], *tt.want[i]) {
 					t.Errorf("GetCommentsByPost() got = %v, want %v", got[i], tt.want[i])
 					return
 				}
@@ -378,7 +378,7 @@ func TestCommentsInMemory_GetRepliesOfComment(t *testing.T) {
 				return
 			}
 			for i := 0; i < len(got); i++ {
-				if !isEqual(*got[i], *tt.want[i]) {
+				if !IsEqual(*got[i], *tt.want[i]) {
 					t.Errorf("GetCommentsByPost() got = %v, want %v", got[i], tt.want[i])
 					return
 				}
