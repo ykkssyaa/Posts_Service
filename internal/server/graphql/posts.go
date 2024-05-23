@@ -7,6 +7,7 @@ package graphql
 import (
 	"context"
 	"errors"
+
 	"github.com/vektah/gqlparser/v2/gqlerror"
 	"github.com/ykkssyaa/Posts_Service/graph"
 	"github.com/ykkssyaa/Posts_Service/internal/models"
@@ -29,8 +30,8 @@ func (r *mutationResolver) CreatePost(ctx context.Context, post models.InputPost
 }
 
 // Comments is the resolver for the comments field.
-func (r *postResolver) Comments(ctx context.Context, obj *models.Post) ([]*models.Comment, error) {
-	comments, err := r.CommentsService.GetCommentsByPost(obj.ID)
+func (r *postResolver) Comments(ctx context.Context, obj *models.Post, page *int, pageSize *int) ([]*models.Comment, error) {
+	comments, err := r.CommentsService.GetCommentsByPost(obj.ID, page, pageSize)
 	if err != nil {
 		var rErr re.ResponseError
 		if errors.As(err, &rErr) {
@@ -60,7 +61,6 @@ func (r *queryResolver) GetAllPosts(ctx context.Context, page *int, pageSize *in
 
 // GetPostByID is the resolver for the GetPostById field.
 func (r *queryResolver) GetPostByID(ctx context.Context, id int) (*models.Post, error) {
-
 	post, err := r.PostsService.GetPostById(id)
 	if err != nil {
 		var rErr re.ResponseError

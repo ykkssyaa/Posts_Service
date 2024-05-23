@@ -15,7 +15,7 @@ type Post {
     author: String!
     content: String!
     commentsAllowed: Boolean!
-    comments:[Comment!]
+    comments(page: Int, pageSize: Int):[Comment!]
 }
 
 input InputPost{

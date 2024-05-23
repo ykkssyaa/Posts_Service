@@ -7,6 +7,7 @@ package graphql
 import (
 	"context"
 	"errors"
+
 	"github.com/vektah/gqlparser/v2/gqlerror"
 	"github.com/ykkssyaa/Posts_Service/graph"
 	"github.com/ykkssyaa/Posts_Service/internal/consts"
@@ -16,7 +17,6 @@ import (
 
 // Replies is the resolver for the replies field.
 func (r *commentResolver) Replies(ctx context.Context, obj *models.Comment) ([]*models.Comment, error) {
-
 	comments, err := r.CommentsService.GetRepliesOfComment(obj.ID)
 	if err != nil {
 		var rErr re.ResponseError
@@ -28,7 +28,6 @@ func (r *commentResolver) Replies(ctx context.Context, obj *models.Comment) ([]*
 	}
 
 	return comments, nil
-
 }
 
 // CreateComment is the resolver for the CreateComment field.
@@ -59,7 +58,6 @@ func (r *mutationResolver) CreateComment(ctx context.Context, input models.Input
 
 // CommentsSubscription is the resolver for the CommentsSubscription field.
 func (r *subscriptionResolver) CommentsSubscription(ctx context.Context, postID int) (<-chan *models.Comment, error) {
-
 	id, ch, err := r.CommentsObservers.CreateObserver(postID)
 
 	if err != nil {
