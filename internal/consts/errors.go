@@ -1,11 +1,12 @@
 package consts
 
 const (
-	EmptyAuthorError    = "empty author error"
-	WrongPageError      = "wrong page number error"
-	WrongPageSizeError  = "wrong page size error"
-	WrongIdError        = "wrong id error"
-	TooLongContentError = "content is too long"
+	EmptyAuthorError        = "empty author error"
+	WrongPageError          = "wrong page number error"
+	WrongPageSizeError      = "wrong page size error"
+	WrongIdError            = "wrong id error"
+	TooLongContentError     = "content is too long"
+	CommentsNotAllowedError = "comments not allowed for this post"
 
 	CreatingPostError = "error with creating new post"
 	GettingPostError  = "error with getting post"

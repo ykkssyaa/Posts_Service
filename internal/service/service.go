@@ -14,7 +14,7 @@ type Services struct {
 func NewServices(gateways *gateway.Gateways, logger *logger.Logger) *Services {
 	return &Services{
 		Posts:    NewPostsService(gateways.Posts, logger),
-		Comments: NewCommentsService(gateways.Comments, logger),
+		Comments: NewCommentsService(gateways.Comments, logger, gateways.Posts),
 	}
 }
 

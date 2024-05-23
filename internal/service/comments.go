@@ -1,6 +1,8 @@
 package service
 
 import (
+	"database/sql"
+	"errors"
 	"github.com/ykkssyaa/Posts_Service/internal/consts"
 	"github.com/ykkssyaa/Posts_Service/internal/gateway"
 	"github.com/ykkssyaa/Posts_Service/internal/models"
@@ -9,12 +11,17 @@ import (
 )
 
 type CommentsService struct {
-	repo   gateway.Comments
-	logger *logger.Logger
+	repo       gateway.Comments
+	logger     *logger.Logger
+	PostGetter PostGetter
 }
 
-func NewCommentsService(repo gateway.Comments, logger *logger.Logger) *CommentsService {
-	return &CommentsService{repo: repo, logger: logger}
+type PostGetter interface {
+	GetPostById(id int) (models.Post, error)
+}
+
+func NewCommentsService(repo gateway.Comments, logger *logger.Logger, getter PostGetter) *CommentsService {
+	return &CommentsService{repo: repo, logger: logger, PostGetter: getter}
 }
 
 func (c CommentsService) CreateComment(comment models.Comment) (models.Comment, error) {
@@ -32,6 +39,26 @@ func (c CommentsService) CreateComment(comment models.Comment) (models.Comment, 
 			Message: consts.TooLongContentError,
 			Type:    consts.BadRequestType,
 		}
+	}
+
+	post, err := c.PostGetter.GetPostById(comment.Post)
+	if err != nil {
+		c.logger.Err.Println(consts.GettingPostError, err.Error())
+		if errors.Is(err, sql.ErrNoRows) {
+			return models.Comment{}, re.ResponseError{
+				Message: consts.PostNotFountError,
+				Type:    consts.NotFoundType,
+			}
+		}
+	}
+
+	if !post.CommentsAllowed {
+		c.logger.Err.Println(consts.CommentsNotAllowedError, err.Error())
+		return models.Comment{}, re.ResponseError{
+			Message: consts.CommentsNotAllowedError,
+			Type:    consts.BadRequestType,
+		}
+
 	}
 
 	newComment, err := c.repo.CreateComment(comment)
