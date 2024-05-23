@@ -81,7 +81,8 @@ func (c *CommentsInMemory) GetRepliesOfComment(commentId int) ([]*models.Comment
 
 	for _, comment := range c.comments {
 		if comment.ReplyTo != nil && *comment.ReplyTo == commentId {
-			res = append(res, &comment)
+			com := comment
+			res = append(res, &com)
 		}
 	}
 
